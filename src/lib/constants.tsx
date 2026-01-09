@@ -34,6 +34,18 @@ export const paymentInfoMap: Record<
     title: "Manual Payment",
     icon: <CreditCard />,
   },
+  wompi: {
+    title: "Wompi (Tarjetas, PSE, Nequi)",
+    icon: <CreditCard />,
+  },
+  "medusa-payment-wompi": {
+    title: "Wompi",
+    icon: <CreditCard />,
+  },
+  pp_wompi_wompi: {
+    title: "Wompi",
+    icon: <CreditCard />,
+  },
   // Add more payment providers here
 }
 

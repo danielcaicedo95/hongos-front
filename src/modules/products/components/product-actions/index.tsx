@@ -12,6 +12,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 import { useRouter } from "next/navigation"
+import EasyCheckoutModal from "./easy-checkout-modal"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -38,6 +39,7 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -137,6 +139,13 @@ export default function ProductActions({
 
   return (
     <>
+      <EasyCheckoutModal
+        isOpen={showModal}
+        close={() => setShowModal(false)}
+        product={product}
+        variant={selectedVariant}
+        countryCode={countryCode}
+      />
       <div className="flex flex-col gap-y-2" ref={actionsRef}>
         <div>
           {(product.variants?.length ?? 0) > 1 && (
@@ -177,10 +186,25 @@ export default function ProductActions({
           data-testid="add-product-button"
         >
           {!selectedVariant && !options
-            ? "Select variant"
+            ? "Seleccionar variante"
             : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
+              ? "Agotado"
+              : "Agregar al carrito"}
+        </Button>
+        <Button
+          onClick={() => setShowModal(true)}
+          disabled={
+            !inStock ||
+            !selectedVariant ||
+            !!disabled ||
+            isAdding ||
+            !isValidVariant
+          }
+          variant="secondary"
+          className="w-full h-10"
+          data-testid="buy-now-button"
+        >
+          Comprar ahora mismo
         </Button>
         <MobileActions
           product={product}

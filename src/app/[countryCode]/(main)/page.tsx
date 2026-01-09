@@ -1,6 +1,9 @@
 import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
+import FeaturedProductsList from "@modules/home/components/featured-products-list"
+import BenefitsCarousel from "@modules/home/components/benefits-carousel"
+import CustomerReviews from "@modules/home/components/customer-reviews"
 import Hero from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
@@ -10,6 +13,9 @@ export const metadata: Metadata = {
   description:
     "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
 }
+
+// [!NUEVO] Agrega esta línea para evitar el caché y ver las colecciones al instante
+export const dynamic = "force-dynamic"
 
 export default async function Home(props: {
   params: Promise<{ countryCode: string }>
@@ -21,8 +27,10 @@ export default async function Home(props: {
   const region = await getRegion(countryCode)
 
   const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
+    fields: "id, handle, title, metadata",
+  }).then(({ collections }) => ({
+    collections: collections.filter((c) => c.handle !== "featured"),
+  }))
 
   if (!collections || !region) {
     return null
@@ -31,11 +39,11 @@ export default async function Home(props: {
   return (
     <>
       <Hero />
-      <div className="py-12">
-        <ul className="flex flex-col gap-x-6">
-          <FeaturedProducts collections={collections} region={region} />
-        </ul>
-      </div>
+      <FeaturedProducts collections={collections} region={region} />
+      <CustomerReviews backgroundImage="/images/resenas/imagen-resena-home.jpg" />
+
+      <FeaturedProductsList countryCode={countryCode} />
+      <BenefitsCarousel />
     </>
   )
 }

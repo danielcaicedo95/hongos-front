@@ -4,6 +4,9 @@ import "styles/globals.css"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  icons: {
+    icon: "/images/Logo-origen.png",
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
