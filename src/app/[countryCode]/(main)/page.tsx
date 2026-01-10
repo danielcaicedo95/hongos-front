@@ -5,6 +5,8 @@ import FeaturedProductsList from "@modules/home/components/featured-products-lis
 import BenefitsCarousel from "@modules/home/components/benefits-carousel"
 import CustomerReviews from "@modules/home/components/customer-reviews"
 import Hero from "@modules/home/components/hero"
+import AboutUs from "@modules/home/components/about-us"
+import ContactSection from "@modules/home/components/contact-section"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
@@ -44,6 +46,8 @@ export default async function Home(props: {
 
       <FeaturedProductsList countryCode={countryCode} />
       <BenefitsCarousel />
+      <AboutUs />
+      <ContactSection />
     </>
   )
 }

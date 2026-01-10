@@ -101,14 +101,14 @@ export default function CustomerReviews({ backgroundImage }: { backgroundImage?:
                 <div className="text-center mb-12 md:mb-16">
                     <Heading
                         level="h2"
-                        className="text-3xl md:text-5xl font-serif text-white mb-8 tracking-tight"
+                        className="text-3xl md:text-5xl font-serif text-white mb-8 tracking-tight leading-tight"
                     >
                         Nuestros Clientes Nos Respaldan
                     </Heading>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 mb-8">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16 mb-8">
                         <div className="text-center">
-                            <Heading level="h3" className="text-4xl md:text-6xl font-bold text-amber-400 mb-2">
+                            <Heading level="h3" className="text-4xl md:text-6xl font-bold text-amber-400 mb-2 leading-none">
                                 +9,000
                             </Heading>
                             <p className="text-gray-200 text-lg">Ventas</p>

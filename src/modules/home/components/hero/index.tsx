@@ -25,7 +25,7 @@ const Hero = () => {
           </span>
           <Heading
             level="h1"
-            className="text-4xl md:text-7xl leading-tight text-white font-serif italic mb-4"
+            className="text-4xl md:text-7xl leading-snug md:leading-tight text-white font-serif italic mb-6 md:mb-4"
           >
             Eleva tu bienestar con <br /> Inteligencia Fúngica
           </Heading>

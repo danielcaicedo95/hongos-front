@@ -42,7 +42,7 @@ export default function CollectionCard({
                 {/* Título H3 */}
                 <Heading
                     level="h3"
-                    className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-4 uppercase tracking-wider"
+                    className="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-4 uppercase tracking-wider leading-snug"
                 >
                     {title}
                 </Heading>

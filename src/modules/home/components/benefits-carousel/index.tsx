@@ -105,7 +105,7 @@ export default function BenefitsCarousel() {
               <div className="absolute inset-0 flex flex-col justify-end items-center text-center p-6 md:p-8 pb-12 md:pb-16 z-10">
                 <Heading
                   level="h3"
-                  className="text-2xl md:text-3xl font-bold text-white mb-2 uppercase tracking-wider"
+                  className="text-2xl md:text-3xl font-bold text-white mb-2 uppercase tracking-wider leading-snug"
                 >
                   {mushroom.name}
                 </Heading>

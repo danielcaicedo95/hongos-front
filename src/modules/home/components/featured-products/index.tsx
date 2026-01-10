@@ -13,7 +13,7 @@ export default async function FeaturedProducts({
     <div className="w-full">
       {/* Header Section con SEO */}
       <div className="content-container text-center py-12">
-        <Heading level="h2" className="text-3xl md:text-5xl font-serif mb-6 text-gray-900">
+        <Heading level="h2" className="text-3xl md:text-5xl font-serif mb-6 text-gray-900 leading-snug">
           Nuestras Colecciones de Hongos Funcionales
         </Heading>
         <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
