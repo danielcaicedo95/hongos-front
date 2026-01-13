@@ -17,6 +17,9 @@ type Props = {
 
 export const PRODUCT_LIMIT = 12
 
+// TEMPORARY: Disabled static generation due to backend publishable key rejection
+// TODO: Re-enable after fixing backend Medusa configuration
+/*
 export async function generateStaticParams() {
   console.log('[BUILD DEBUG] Collections - Generating static params')
   console.log('[BUILD DEBUG] Collections - Env vars available:', {
@@ -63,6 +66,7 @@ export async function generateStaticParams() {
 
   return staticParams
 }
+*/
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params

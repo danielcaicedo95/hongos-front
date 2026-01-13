@@ -10,6 +10,9 @@ type Props = {
   searchParams: Promise<{ v_id?: string }>
 }
 
+// TEMPORARY: Disabled static generation due to backend publishable key rejection
+// TODO: Re-enable after fixing backend Medusa configuration
+/*
 export async function generateStaticParams() {
   console.log('[BUILD DEBUG] Products - Generating static params')
   console.log('[BUILD DEBUG] Products - Env vars available:', {
@@ -63,6 +66,7 @@ export async function generateStaticParams() {
     return []
   }
 }
+*/
 
 function getImagesForVariant(
   product: HttpTypes.StoreProduct,
