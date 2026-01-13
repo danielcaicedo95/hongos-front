@@ -11,14 +11,24 @@ type Props = {
 }
 
 export async function generateStaticParams() {
+  console.log('[BUILD DEBUG] Products - Generating static params')
+  console.log('[BUILD DEBUG] Products - Env vars available:', {
+    hasPublishableKey: !!process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    hasBackendUrl: !!process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL,
+    keyPrefix: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY?.substring(0, 10)
+  })
+
   try {
     const countryCodes = await listRegions().then((regions) =>
       regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
     )
 
     if (!countryCodes) {
+      console.log('[BUILD DEBUG] Products - No country codes found')
       return []
     }
+
+    console.log('[BUILD DEBUG] Products - Found country codes:', countryCodes)
 
     const promises = countryCodes.map(async (country) => {
       const { response } = await listProducts({
@@ -34,6 +44,8 @@ export async function generateStaticParams() {
 
     const countryProducts = await Promise.all(promises)
 
+    console.log('[BUILD DEBUG] Products - Fetched products for', countryProducts.length, 'countries')
+
     return countryProducts
       .flatMap((countryData) =>
         countryData.products.map((product) => ({
@@ -43,9 +55,9 @@ export async function generateStaticParams() {
       )
       .filter((param) => param.handle)
   } catch (error) {
+    console.error('[BUILD DEBUG] Products - ERROR during generateStaticParams:', error)
     console.error(
-      `Failed to generate static paths for product pages: ${
-        error instanceof Error ? error.message : "Unknown error"
+      `Failed to generate static paths for product pages: ${error instanceof Error ? error.message : "Unknown error"
       }.`
     )
     return []

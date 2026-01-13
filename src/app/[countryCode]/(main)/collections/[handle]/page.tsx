@@ -18,13 +18,23 @@ type Props = {
 export const PRODUCT_LIMIT = 12
 
 export async function generateStaticParams() {
+  console.log('[BUILD DEBUG] Collections - Generating static params')
+  console.log('[BUILD DEBUG] Collections - Env vars available:', {
+    hasPublishableKey: !!process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    hasBackendUrl: !!process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL,
+    keyPrefix: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY?.substring(0, 10)
+  })
+
   const { collections } = await listCollections({
     fields: "*products",
   })
 
   if (!collections) {
+    console.log('[BUILD DEBUG] Collections - No collections found')
     return []
   }
+
+  console.log('[BUILD DEBUG] Collections - Found', collections.length, 'collections')
 
   const countryCodes = await listRegions().then(
     (regions: StoreRegion[]) =>
@@ -33,6 +43,8 @@ export async function generateStaticParams() {
         .flat()
         .filter(Boolean) as string[]
   )
+
+  console.log('[BUILD DEBUG] Collections - Found country codes:', countryCodes)
 
   const collectionHandles = collections.map(
     (collection: StoreCollection) => collection.handle
@@ -46,6 +58,8 @@ export async function generateStaticParams() {
       }))
     )
     .flat()
+
+  console.log('[BUILD DEBUG] Collections - Generated', staticParams?.length, 'static params')
 
   return staticParams
 }
