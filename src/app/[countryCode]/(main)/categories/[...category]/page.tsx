@@ -15,6 +15,9 @@ type Props = {
   }>
 }
 
+// TEMPORARY: Disabled static generation due to backend publishable key issue
+// TODO: Re-enable after fixing Sales Channel <-> Region association in Medusa Admin
+/*
 export async function generateStaticParams() {
   const product_categories = await listCategories()
 
@@ -41,6 +44,7 @@ export async function generateStaticParams() {
 
   return staticParams
 }
+*/
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
