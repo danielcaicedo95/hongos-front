@@ -51,88 +51,96 @@ const mushrooms = [
 export default function BenefitsCarousel() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollContainer = (direction: "left" | "right") => {
-    if (containerRef.current) {
-      const scrollAmount = direction === "left" ? -300 : 300;
-      containerRef.current.scrollBy({
-        left: scrollAmount,
+  const scroll = (direction: "left" | "right") => {
+    const container = containerRef.current;
+    if (container) {
+      const scrollAmount = container.clientWidth * 0.8;
+      container.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
     }
   };
 
   return (
-    <section className="w-full bg-neutral-900 border-t border-neutral-800">
-      <div className="relative">
-        {/* Flechas de navegación solo en móviles */}
-        <button
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 p-3 rounded-full z-10 md:hidden"
-          onClick={() => scrollContainer("left")}
-          aria-label="Scroll Left"
-        >
-          ←
-        </button>
-        <button
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 p-3 rounded-full z-10 md:hidden"
-          onClick={() => scrollContainer("right")}
-          aria-label="Scroll Right"
-        >
-          →
-        </button>
+    <section className="w-full bg-neutral-900 border-t border-white/5 overflow-hidden">
+      <div className="relative group/carousel w-full">
+        {/* Navigation Arrows - Integrated look */}
+        <div className="hidden md:block">
+          <button
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-30 bg-white/10 hover:bg-white/20 backdrop-blur-md p-4 rounded-full border border-white/10 text-white opacity-0 group-hover/carousel:opacity-100 transition-all duration-500"
+            onClick={() => scroll("left")}
+            aria-label="Scroll Left"
+          >
+            ←
+          </button>
+          <button
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-30 bg-white/10 hover:bg-white/20 backdrop-blur-md p-4 rounded-full border border-white/10 text-white opacity-0 group-hover/carousel:opacity-100 transition-all duration-500"
+            onClick={() => scroll("right")}
+            aria-label="Scroll Right"
+          >
+            →
+          </button>
+        </div>
 
         <div
           ref={containerRef}
-          className="flex md:grid md:grid-cols-2 lg:grid-cols-4 h-[500px] md:h-[600px] w-full overflow-x-auto md:overflow-visible gap-4 no-scrollbar"
+          className="flex h-[550px] md:h-[650px] w-full overflow-x-auto no-scrollbar snap-x snap-mandatory"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {mushrooms.map((mushroom) => (
+          {mushrooms.map((mushroom, index) => (
             <div
               key={mushroom.id}
-              className="relative group h-full shrink-0 md:shrink border-r md:border-r md:last:border-r-0 border-white/10 last:border-r-0 md:w-auto w-[80%] snap-center"
+              className="relative group h-full min-w-[90%] md:min-w-[50%] lg:min-w-[25%] snap-start border-r border-white/5 last:border-r-0"
             >
-              {/* Imagen de fondo */}
-              <Image
-                src={mushroom.image}
-                alt={mushroom.name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              />
-
-              {/* Superposición oscura para legibilidad del texto */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-              {/* Contenido */}
-              <div className="absolute inset-0 flex flex-col justify-end items-center text-center p-6 md:p-8 pb-12 md:pb-16 z-10">
-                <Heading
-                  level="h3"
-                  className="text-2xl md:text-3xl font-bold text-white mb-2 uppercase tracking-wider leading-snug"
-                >
-                  {mushroom.name}
-                </Heading>
-
-                <Text className="text-sm text-gray-300 italic mb-3 font-serif">
-                  {mushroom.scientificName}
-                </Text>
-
-                <p className="text-gray-200 text-sm md:text-base max-w-[250px] mb-6 font-light leading-relaxed">
-                  {mushroom.benefits}
-                </p>
-
-                <Link href={mushroom.link} passHref>
-                  <Button
-                    variant="transparent"
-                    className="text-white hover:text-amber-300 font-medium tracking-wide flex items-center gap-2 group/btn transition-all"
-                  >
-                    SABER MÁS
-                    <span className="transform group-hover/btn:translate-x-1 transition-transform">
-                      →
-                    </span>
-                  </Button>
-                </Link>
+              {/* Background Image */}
+              <div className="absolute inset-0 z-0 bg-neutral-800">
+                <Image
+                  src={mushroom.image}
+                  alt={mushroom.name}
+                  fill
+                  priority={index < 2}
+                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                  sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 25vw"
+                />
+                {/* Refined gradient for better UX/UI contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
               </div>
 
-              {/* Efecto de hover (borde) */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-amber-500/20 transition-colors pointer-events-none" />
+              {/* Content - Vertically Centered for better UI balance */}
+              <div className="relative z-10 h-full flex flex-col justify-center items-center text-center p-8 md:p-12">
+                <div className="transition-all duration-[800ms] group-hover:-translate-y-4">
+                  <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 backdrop-blur-sm rounded-full mb-6 scale-90 md:scale-100">
+                    <span className="text-[10px] text-white/60 font-black tracking-[0.3em] uppercase">
+                      {mushroom.scientificName}
+                    </span>
+                  </div>
+
+                  <Heading
+                    level="h3"
+                    className="text-3xl md:text-4xl font-black text-white mb-4 uppercase tracking-tighter leading-none"
+                  >
+                    {mushroom.name}
+                  </Heading>
+
+                  <p className="text-zinc-400 text-sm md:text-base max-w-[280px] mb-8 font-medium leading-relaxed opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    {mushroom.benefits}
+                  </p>
+
+                  <Link href={mushroom.link} passHref className="block">
+                    <Button
+                      variant="transparent"
+                      className="text-white border-b-2 border-white/20 hover:border-white transition-all pb-1 font-black text-xs tracking-widest uppercase flex items-center gap-3 mx-auto"
+                    >
+                      Descubrir
+                      <span className="text-lg">→</span>
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Subtle accent line on hover */}
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left z-20" />
             </div>
           ))}
         </div>

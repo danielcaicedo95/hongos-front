@@ -13,10 +13,11 @@ import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
 
 const HONGOS_TYPES = [
-  { name: "Reishi", href: "/hongos/reishi", icon: "🍄" },
-  { name: "Melena de León", href: "/hongos/melena-de-leon", icon: "🦁" },
-  { name: "Cordyceps", href: "/hongos/cordyceps", icon: "🐛" },
-  { name: "Chaga", href: "/hongos/chaga", icon: "🌑" },
+  { name: "Reishi", href: "/collections/hongos-ganoderma", icon: "🍄" },
+  { name: "Melena de León", href: "/collections/hongos-melena-leon", icon: "🦁" },
+  { name: "Cordyceps", href: "/collections/hongos-cordyceps", icon: "🐛" },
+  { name: "Chaga", href: "/collections/hongos-chaga", icon: "🌑" },
+  { name: "Cola de Pavo", href: "/collections/hongos-cola-de-pavo", icon: "🦚" },
 ]
 
 const HONGOS_BENEFITS = [

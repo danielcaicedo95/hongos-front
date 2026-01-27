@@ -4,6 +4,8 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import { getProductReviews } from "@lib/data/reviews"
+import { getProductBenefits } from "@lib/data/benefits"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -77,12 +79,12 @@ function getImagesForVariant(
   }
 
   const variant = product.variants!.find((v) => v.id === selectedVariantId)
-  if (!variant || !variant.images.length) {
+  if (!variant || !variant.images || !variant.images.length) {
     return product.images
   }
 
   const imageIdsMap = new Map(variant.images.map((i) => [i.id, true]))
-  return product.images!.filter((i) => imageIdsMap.has(i.id))
+  return product.images?.filter((i) => imageIdsMap.has(i.id))
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -136,12 +138,17 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
+  const reviews = await getProductReviews(pricedProduct.id)
+  const benefits = await getProductBenefits(pricedProduct.id)
+
   return (
     <ProductTemplate
       product={pricedProduct}
       region={region}
       countryCode={params.countryCode}
-      images={images}
+      images={images || []}
+      reviews={reviews}
+      benefits={benefits}
     />
   )
 }

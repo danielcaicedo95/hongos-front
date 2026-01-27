@@ -18,7 +18,24 @@ export default function ProductPrice({
   const selectedPrice = variant ? variantPrice : cheapestPrice
 
   if (!selectedPrice) {
-    return <div className="block w-32 h-9 bg-gray-100 animate-pulse" />
+    // Fallback: Try to find any price in the variants if calculated_price is missing
+    const fallbackPrice = (product.variants?.[0] as any)?.prices?.[0]
+    if (fallbackPrice) {
+      return (
+        <div className="flex flex-col text-ui-fg-base">
+          <span className="text-xl-semi">
+            {new Intl.NumberFormat('es-CO', { style: 'currency', currency: fallbackPrice.currency_code ?? 'COP' }).format(fallbackPrice.amount)}
+          </span>
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex items-center gap-x-2 py-2">
+        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <span className="text-sm text-zinc-500 font-medium">Buscando el mejor precio...</span>
+      </div>
+    )
   }
 
   return (

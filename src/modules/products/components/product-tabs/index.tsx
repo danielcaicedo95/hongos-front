@@ -6,34 +6,49 @@ import Refresh from "@modules/common/icons/refresh"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
+import { ProductBenefit } from "@lib/data/benefits"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
+  benefits?: ProductBenefit[]
 }
 
-const ProductTabs = ({ product }: ProductTabsProps) => {
+const ProductTabs = ({ product, benefits }: ProductTabsProps) => {
+  const accordionBenefits = benefits?.filter(b => b.type === "accordion") || []
+
   const tabs = [
     {
-      label: "Product Information",
+      label: "Descripción",
       component: <ProductInfoTab product={product} />,
     },
+    ...accordionBenefits.map(b => ({
+      label: b.subtitle || b.h3_title,
+      component: (
+        <div className="text-lg small:text-xl py-6 leading-[1.6] text-zinc-800 font-medium whitespace-pre-line max-w-[800px]">
+          {b.description}
+        </div>
+      )
+    })),
     {
-      label: "Shipping & Returns",
+      label: "Envío y Devoluciones",
       component: <ShippingInfoTab />,
     },
   ]
 
   return (
     <div className="w-full">
-      <Accordion type="multiple">
+      <Accordion type="multiple" defaultValue={["Descripción"]}>
         {tabs.map((tab, i) => (
           <Accordion.Item
             key={i}
             title={tab.label}
             headingSize="medium"
             value={tab.label}
+            className="border-b border-zinc-200"
           >
-            {tab.component}
+            <div className="py-4">
+              {tab.component}
+            </div>
           </Accordion.Item>
         ))}
       </Accordion>
@@ -43,73 +58,46 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Material</span>
-            <p>{product.material ? product.material : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Type</span>
-            <p>{product.type ? product.type.value : "-"}</p>
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Weight</span>
-            <p>{product.weight ? `${product.weight} g` : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Dimensions</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
-                : "-"}
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="text-lg small:text-xl py-6 leading-[1.6] text-zinc-800 font-medium whitespace-pre-line max-w-[800px]">
+      {product.description}
     </div>
   )
 }
 
 const ShippingInfoTab = () => {
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <FastDelivery />
+    <div className="text-lg small:text-xl py-6 text-zinc-800 font-medium">
+      <div className="grid grid-cols-1 gap-y-10">
+        <div className="flex items-start gap-x-4">
+          <div className="bg-blue-50 p-2 rounded-lg text-blue-600 shrink-0">
+            <FastDelivery />
+          </div>
           <div>
-            <span className="font-semibold">Fast delivery</span>
-            <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
+            <span className="font-bold text-zinc-900 block mb-1">Entrega rápida</span>
+            <p className="max-w-xl text-zinc-600 leading-relaxed">
+              Tu paquete llegará de 3 a 5 días hábiles a tu punto de recogida o en la comodidad de tu casa.
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
+        <div className="flex items-start gap-x-4">
+          <div className="bg-blue-50 p-2 rounded-lg text-blue-600 shrink-0">
+            <Refresh />
+          </div>
           <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
+            <span className="font-bold text-zinc-900 block mb-1">Cambios sencillos</span>
+            <p className="max-w-xl text-zinc-600 leading-relaxed">
+              ¿No es exactamente lo que esperabas? No te preocupes: cambiaremos tu producto por uno nuevo.
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-x-2">
-          <Back />
+        <div className="flex items-start gap-x-4">
+          <div className="bg-blue-50 p-2 rounded-lg text-blue-600 shrink-0">
+            <Back />
+          </div>
           <div>
-            <span className="font-semibold">Easy returns</span>
-            <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
+            <span className="font-bold text-zinc-900 block mb-1">Devoluciones fáciles</span>
+            <p className="max-w-xl text-zinc-600 leading-relaxed">
+              Simplemente devuelve tu producto y te reembolsaremos tu dinero. Sin preguntas: haremos lo posible para que tu devolución sea sin complicaciones.
             </p>
           </div>
         </div>
