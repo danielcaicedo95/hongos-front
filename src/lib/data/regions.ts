@@ -10,14 +10,18 @@ export const listRegions = async () => {
     ...(await getCacheOptions("regions")),
   }
 
-  return sdk.client
-    .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
-      method: "GET",
-      next,
-      cache: "force-cache",
-    })
-    .then(({ regions }) => regions)
-    .catch(medusaError)
+  try {
+    return await sdk.client
+      .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
+        method: "GET",
+        next,
+        cache: "force-cache",
+      })
+      .then(({ regions }) => regions)
+  } catch (error) {
+    console.error("regions.ts: Error fetching regions:", error)
+    return []
+  }
 }
 
 export const retrieveRegion = async (id: string) => {

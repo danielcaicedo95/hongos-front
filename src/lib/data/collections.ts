@@ -30,16 +30,21 @@ export const listCollections = async (
   queryParams.limit = queryParams.limit || "100"
   queryParams.offset = queryParams.offset || "0"
 
-  return sdk.client
-    .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>(
-      "/store/collections",
-      {
-        query: queryParams,
-        next,
-        cache: "force-cache",
-      }
-    )
-    .then(({ collections }) => ({ collections, count: collections.length }))
+  try {
+    return await sdk.client
+      .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>(
+        "/store/collections",
+        {
+          query: queryParams,
+          next,
+          cache: "force-cache",
+        }
+      )
+      .then(({ collections }) => ({ collections, count: collections.length }))
+  } catch (error) {
+    console.error("collections.ts: Error fetching collections:", error)
+    return { collections: [], count: 0 }
+  }
 }
 
 export const getCollectionByHandle = async (

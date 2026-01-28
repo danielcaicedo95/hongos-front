@@ -34,14 +34,21 @@ export default async function Home(props: {
     collections: collections.filter((c) => c.handle !== "featured"),
   }))
 
-  if (!collections || !region) {
-    return null
+  if (!region) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8 bg-[#0a2342] text-white">
+        <h2 className="text-2xl font-bold mb-4">Estamos preparando la tienda...</h2>
+        <p className="text-blue-100 mb-8">El servidor está arrancando (esto ocurre tras 15 min de inactividad). Por favor, intenta recargar la página en un momento.</p>
+      </div>
+    )
   }
 
   return (
     <>
       <Hero />
-      <FeaturedProducts collections={collections} region={region} />
+      {collections && collections.length > 0 && (
+        <FeaturedProducts collections={collections} region={region} />
+      )}
       <CustomerReviews backgroundImage="/images/resenas/imagen-resena-home.jpg" />
 
       <FeaturedProductsList countryCode={countryCode} />
